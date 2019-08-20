@@ -816,14 +816,7 @@ export default class StructuredQuery extends AtomicQuery {
     } else if (column.expression_name != null) {
       return ["expression", column.expression_name];
     } else if (column.source === "aggregation") {
-      // HACK: ideally column would include the aggregation index directly
-      const columnIndex = _.findIndex(
-        this.columnNames(),
-        name => name === column.name,
-      );
-      if (columnIndex >= 0) {
-        return this.columnDimensions()[columnIndex].mbql();
-      }
+      return column.field_ref;
     }
     return null;
   }

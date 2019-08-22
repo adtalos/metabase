@@ -650,14 +650,20 @@ export class AggregationDimension extends Dimension {
     const aggregation =
       this._query && this._query.aggregations()[this.aggregationIndex()];
     if (aggregation) {
+      const short = aggregation[0];
+
       // FIXME: query lib
-      if (aggregation[0] === "aggregation-options") {
+      if (short === "aggregation-options") {
         const { "display-name": displayName } = aggregation[2];
         if (displayName) {
           return displayName;
         }
       }
-      const short = aggregation[0];
+
+      if (short === "metric") {
+        return this._metadata.metrics[this._query.aggregations()[this.aggregationIndex()][1]].description;
+      }
+
       // NOTE: special case for "distinct"
       return short === "distinct" ? "count" : short;
     }

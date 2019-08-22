@@ -77,6 +77,7 @@ const SORTABLE_AGGREGATION_TYPES = new Set([
   "sum",
   "min",
   "max",
+  "metric",
 ]);
 
 const Query = {
@@ -237,9 +238,6 @@ const Query = {
   },
 
   canSortByAggregateField(query, index) {
-    if (!Query.hasValidBreakout(query)) {
-      return false;
-    }
     const aggregations = Query.getAggregations(query);
     return (
       aggregations[index] &&

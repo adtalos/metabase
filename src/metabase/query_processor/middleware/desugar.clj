@@ -27,25 +27,25 @@
     [:time-interval field :next    unit options] (recur [:time-interval field  1 unit options])
 
     [:time-interval field (n :guard #{-1}) unit (_ :guard :include-current)]
-    [:between [:datetime-field field unit] [:relative-datetime n unit] [:relative-datetime 0 unit]]
+    [:between field [:relative-datetime n unit] [:relative-datetime 0 unit]]
 
     [:time-interval field (n :guard #{1}) unit (_ :guard :include-current)]
-    [:between [:datetime-field field unit] [:relative-datetime 0 unit] [:relative-datetime n unit]]
+    [:between field [:relative-datetime 0 unit] [:relative-datetime n unit]]
 
     [:time-interval field (n :guard #{-1 0 1}) unit _]
-    [:= [:datetime-field field unit] [:relative-datetime n unit]]
+    [:and [:>= field [:relative-datetime n unit]] [:< field [:relative-datetime (+' n 1) unit]]]
 
     [:time-interval field (n :guard neg?) unit (_ :guard :include-current)]
-    [:between [:datetime-field field unit] [:relative-datetime n unit] [:relative-datetime 0 unit]]
+    [:between field [:relative-datetime n unit] [:relative-datetime 0 unit]]
 
     [:time-interval field (n :guard neg?) unit _]
-    [:between [:datetime-field field unit] [:relative-datetime n unit] [:relative-datetime -1 unit]]
+    [:between field [:relative-datetime n unit] [:relative-datetime -1 unit]]
 
     [:time-interval field n unit (_ :guard :include-current)]
-    [:between [:datetime-field field unit] [:relative-datetime 0 unit] [:relative-datetime n unit]]
+    [:between field [:relative-datetime 0 unit] [:relative-datetime n unit]]
 
     [:time-interval field n unit _]
-    [:between [:datetime-field field unit] [:relative-datetime 1 unit] [:relative-datetime n unit]]))
+    [:between field [:relative-datetime 1 unit] [:relative-datetime n unit]]))
 
 (defn- desugar-does-not-contain [query]
   (mbql.u/replace query

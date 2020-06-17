@@ -27,7 +27,7 @@
     [:time-interval field :next    unit options] (recur [:time-interval field  1 unit options])
 
     [:time-interval field (n :guard #{-1}) unit (_ :guard :include-current)]
-    [:between field [:relative-datetime n unit] [:relative-datetime 0 unit]]
+    [:and [:>= field [:relative-datetime n unit]] [:< field [:relative-datetime 1 unit]]]
 
     [:time-interval field (n :guard #{1}) unit (_ :guard :include-current)]
     [:between field [:relative-datetime 0 unit] [:relative-datetime n unit]]
@@ -36,10 +36,10 @@
     [:and [:>= field [:relative-datetime n unit]] [:< field [:relative-datetime (+' n 1) unit]]]
 
     [:time-interval field (n :guard neg?) unit (_ :guard :include-current)]
-    [:between field [:relative-datetime n unit] [:relative-datetime 0 unit]]
+    [:and [:>= field [:relative-datetime n unit]] [:< field [:relative-datetime 1 unit]]]
 
     [:time-interval field (n :guard neg?) unit _]
-    [:between field [:relative-datetime n unit] [:relative-datetime -1 unit]]
+    [:and [:>= field [:relative-datetime n unit]] [:< field [:relative-datetime 0 unit]]]
 
     [:time-interval field n unit (_ :guard :include-current)]
     [:between field [:relative-datetime 0 unit] [:relative-datetime n unit]]
